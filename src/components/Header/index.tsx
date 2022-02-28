@@ -12,5 +12,5 @@ export function Header() {
                 </button>
             </Content>
         </Container>
-    )
-}
+    );
+};
