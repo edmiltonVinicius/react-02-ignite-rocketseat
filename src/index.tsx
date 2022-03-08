@@ -1,30 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createServer } from 'miragejs';
+import { createServer, Model } from 'miragejs';
 import { App } from './App';
 
 createServer({
-  routes() {
-    this.namespace = 'fake-api';
+    models: {
+        transactions: Model
+    },
 
-    this.get('/transactions', () => {
-      return [
-        {
-          id: 1,
-          title: 'Transaction 1',
-          type: 'deposit',
-          amount: 4000,
-          category: 'Food',
-          createdAt: new Date()
-        }
-      ];
-    });
-  }
+    routes() {
+        this.namespace = 'fake-api';
+
+        this.get('/transactions', (schema, request) => {
+            return schema.all('transactions');
+        });
+
+        this.post('/transactions', (schema, request) => {
+            const data = JSON.parse(request.requestBody);
+
+            return schema.create('transactions', { ...data, id: Math.random() });
+        });
+    }
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+    document.getElementById('root')
 );
