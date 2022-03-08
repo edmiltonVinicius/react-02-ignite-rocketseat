@@ -30,7 +30,10 @@ export function NewTrasanctionModal({ isOpen, onRequestClose }: NewTrasanctionMo
         };
 
         api.post('/transactions', data)
-            .then(response => console.log(response))
+            .then(response => {
+                onRequestClose();
+                clearValuesModalNewTransaction();
+            })
     }
 
     function clearValuesModalNewTransaction() {
