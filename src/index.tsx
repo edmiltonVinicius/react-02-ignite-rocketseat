@@ -5,20 +5,35 @@ import { App } from './App';
 
 createServer({
     models: {
-        transactions: Model
+        transaction: Model
+    },
+
+    seeds(server) {
+        server.db.loadData({
+            transactions: [
+                {
+                    id: 1,
+                    title: "Frelancer website",
+                    type: "deposit",
+                    category: "Dev",
+                    value: 1234,
+                    createdAt: new Date()
+                },
+            ]
+        })
     },
 
     routes() {
         this.namespace = 'fake-api';
 
         this.get('/transactions', (schema, request) => {
-            return schema.all('transactions');
+            return schema.all('transaction');
         });
 
         this.post('/transactions', (schema, request) => {
             const data = JSON.parse(request.requestBody);
 
-            return schema.create('transactions', { ...data, id: Math.random() });
+            return schema.create('transaction', { ...data, id: Math.random() });
         });
     }
 });
